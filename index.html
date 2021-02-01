@@ -59,48 +59,53 @@
         <table style="width:100%">
           <col>
           <colgroup span="4"></colgroup>
-          <tr>
-              <th></th>
-              <th colspan=4>Modulation Frequencies</th>
-          </tr>
-          <tr>
-            <th></th>
-            <th>All</th>
-            <th>[1, 20] Hz</th>
-            <th>[1, 16] Hz</th>
-            <th>[4, 16] Hz</th>
-          </tr>
-          <tr>
-            <th>All</th>
-            <td>
-              <audio controls>
-                <source src="audio/FCJF0/SA1_sigHat_all_all.wav" type="audio/wav">
-                Your browser does not support the audio element.
-              </audio>
-             </td>
-            <td>
-               <audio controls>
-                <source src="audio/FCJF0/SA1_sigHat_all_1to20.wav" type="audio/wav">
-                Your browser does not support the audio element.
-              </audio>
-            </td>
-            <td>Smith</td>
-            <td>50</td>
-          </tr>
-          <tr>
-            <th>166-4,000 Hz</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <th>166-1,000 Hz</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
+          <thead>
+              <tr>
+                  <th></th>
+                  <th colspan=4>Modulation Frequencies</th>
+              </tr>
+          </thead>
+          <tbody>  
+              <tr>
+                <th rowspan="4" style="transform: rotate(90deg);">Acoustic Frequency</th>
+                <th></th>
+                <th>All</th>
+                <th>[1, 20] Hz</th>
+                <th>[1, 16] Hz</th>
+                <th>[4, 16] Hz</th>
+              </tr>
+              <tr>
+                <th>All</th>
+                <td>
+                  <audio controls>
+                    <source src="audio/FCJF0/SA1_sigHat_all_all.wav" type="audio/wav">
+                    Your browser does not support the audio element.
+                  </audio>
+                 </td>
+                <td>
+                   <audio controls>
+                    <source src="audio/FCJF0/SA1_sigHat_all_1to20.wav" type="audio/wav">
+                    Your browser does not support the audio element.
+                  </audio>
+                </td>
+                <td>Smith</td>
+                <td>50</td>
+              </tr>
+              <tr>
+                <th>166-4,000 Hz</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <th>166-1,000 Hz</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
         </table>
 
         <script src="src/scripts.js"></script>
