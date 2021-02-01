@@ -3,7 +3,7 @@ body {
 }
 
 .flex-container {
-    width: 80%;
+    width: 95%;
     min-height: 300px;
     margin: 0 auto;
     display: -webkit-flex; /* Safari */     
