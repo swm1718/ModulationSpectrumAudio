@@ -22,6 +22,10 @@ table, th, td {
     margin: 0 auto;
 }
 
+table {
+    border-collapse: collapse;
+}
+
 h1 {
     text-align: center;
     color: green;
