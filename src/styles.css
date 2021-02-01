@@ -8,10 +8,11 @@ body {
     margin: 0 auto;
     display: -webkit-flex; /* Safari */     
     display: flex; /* Standard syntax */
+    border: 1px solid black;
 }
 
 .boxes {
-    background-color: blue;
+    background-color: #949B96;
     margin: 20px;
     padding: 20px;
 }
