@@ -16,35 +16,75 @@
         <h1>Modulation Spectrum Examples</h1>
         <p>This website sets out a number of examples of how speech files are affected when certain modulation frequencies are removed.</p>
 
-        <h2>Speaker: FCJF0</h2>
-        <h2>Utterance: SA1</h2>
+        <h3>Speaker: FCJF0</h3>
+        <h3>Utterance: SA1</h3>
         <h3>Transcript: She had your dark suit in greasy wash water all year.</h3>
+        <div>
+          <audio controls>
+            <source src="audio/FCJF0/SA1_sigOriginal.wav" type="audio/wav">
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+        
+        <table>
+            <tr>
+                <td>Domain</td>
+                <td>Window Type</td>
+                <td>Frame Size</td>
+                <td>Window Size</td>
+            </tr>
+            <tr>
+                <td>Acoustic</td>
+                <td>Hamming (not symmetric)</td>
+                <td>1 ms</td>
+                <td>3 ms</td>
+            </tr>
+            <tr>
+                <td>Modulation</td>
+                <td>Hamming (not symmetric)</td>
+                <td>0.5 s</td>
+                <td>1 s</td>
+            </tr>
+        </table>    
         
         <table style="width:100%">
           <tr>
             <th></th>
             <th>All</th>
-            <th>1-20 Hz</th>
             <th>[1, 20] Hz</th>
+            <th>[1, 16] Hz</th>
             <th>[4, 16] Hz</th>
           </tr>
           <tr>
             <th>All</th>
-            <td><audio controls>
-                <source src="sig.wav" type="audio/wav">
-              Your browser does not support the audio element.
+            <td>
+              <audio controls>
+                <source src="audio/FCJF0/SA1_sigHat_all_all.wav" type="audio/wav">
+                Your browser does not support the audio element.
               </audio>
              </td>
-            <td>50</td>
+            <td>
+               <audio controls>
+                <source src="audio/FCJF0/SA1_sigHat_all_1to20.wav" type="audio/wav">
+                Your browser does not support the audio element.
+              </audio>
+            </td>
             <td>Smith</td>
             <td>50</td>
           </tr>
           <tr>
-            <th>166-1000 Hz</th>
+            <th>166-4,000 Hz</th>
             <td></td>
-            <td>94</td>
-            <td>Smith</td>
-            <td>50</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>166-1,000 Hz</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
           </tr>
         </table>
 
