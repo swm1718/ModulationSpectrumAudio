@@ -24,6 +24,11 @@ table, th, td {
 
 table {
     border-collapse: collapse;
+    table-layout: fixed;
+}
+
+#cell {
+    width: 30px;
 }
 
 h1 {
