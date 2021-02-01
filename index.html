@@ -16,45 +16,47 @@
         <h1>Modulation Spectrum Examples</h1>
         <p>This website sets out a number of examples of how speech files are affected when certain modulation frequencies are removed.</p>
 
-        <div style="width:45%; float:left;" class="boxes">
-            <h2>Speech Details</h2>
-            <p>Speaker: FCJF0</p>
-            <p>Utterance: SA1</p>
-            <p>Transcript: She had your dark suit in greasy wash water all year.</p>
-            <div>
-              <p>Original speech:</p>
-              <audio controls>
-                <source src="audio/FCJF0/SA1_sigOriginal.wav" type="audio/wav">
-                Your browser does not support the audio element.
-              </audio>
+        <div class="flex-container">
+            <div style="width:45%; float:left;" class="boxes">
+                <h2>Speech Details</h2>
+                <p>Speaker: FCJF0</p>
+                <p>Utterance: SA1</p>
+                <p>Transcript: She had your dark suit in greasy wash water all year.</p>
+                <div>
+                  <p>Original speech:</p>
+                  <audio controls>
+                    <source src="audio/FCJF0/SA1_sigOriginal.wav" type="audio/wav">
+                    Your browser does not support the audio element.
+                  </audio>
+                </div>
             </div>
+
+            <div style="width:45%; float:left;" class="boxes">
+                <h2>Modulation Spectrum Details</h2>
+                <table>
+                    <tr>
+                        <td>Domain</td>
+                        <td>Window Type</td>
+                        <td>Frame Size</td>
+                        <td>Window Size</td>
+                    </tr>
+                    <tr>
+                        <td>Acoustic</td>
+                        <td>Hamming (not symmetric)</td>
+                        <td>1 ms</td>
+                        <td>3 ms</td>
+                    </tr>
+                    <tr>
+                        <td>Modulation</td>
+                        <td>Hamming (not symmetric)</td>
+                        <td>0.5 s</td>
+                        <td>1 s</td>
+                    </tr>
+                </table> 
+            </div>
+      
+            <br clear="all" />
         </div>
-        
-        <div style="width:45%; float:left;" class="boxes">
-            <h2>Modulation Spectrum Details</h2>
-            <table>
-                <tr>
-                    <td>Domain</td>
-                    <td>Window Type</td>
-                    <td>Frame Size</td>
-                    <td>Window Size</td>
-                </tr>
-                <tr>
-                    <td>Acoustic</td>
-                    <td>Hamming (not symmetric)</td>
-                    <td>1 ms</td>
-                    <td>3 ms</td>
-                </tr>
-                <tr>
-                    <td>Modulation</td>
-                    <td>Hamming (not symmetric)</td>
-                    <td>0.5 s</td>
-                    <td>1 s</td>
-                </tr>
-            </table> 
-        </div>
-        
-        <br clear="all" />
         
         <h2>Reconstructed Speech Signals</h2>
         <table style="width:100%;">
