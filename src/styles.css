@@ -27,10 +27,6 @@ table {
     table-layout: fixed;
 }
 
-#cell {
-    width: 30px;
-}
-
 h1 {
     text-align: center;
     color: green;
