@@ -1,42 +1,113 @@
 body {
-    background-color: #98A8AE;
+  background-color: #98A8AE;
 }
 
 .flex-container {
-    width: 95%;
-    min-height: 300px;
-    margin: 0 auto;
-    display: -webkit-flex; /* Safari */     
-    display: flex; /* Standard syntax */
-    border: 1px solid black;
+  width: 95%;
+  min-height: 200px;
+  margin: 0 auto;
+  display: -webkit-flex;
+  /* Safari */
+  display: flex;
+  /* Standard syntax */
+  border: 1px solid black;
 }
 
 .boxes {
-    background-color: #949B96;
-    margin: 20px;
-    padding: 20px;
+  background-color: #949B96;
+  margin: 20px;
+  padding: 20px;
 }
 
-table, th, td {
-    border: 1px solid black;
-    margin: 0 auto;
+table,
+th,
+td {
+  border: 1px solid black;
+  margin: 0 auto;
 }
 
 table {
-    border-collapse: collapse;
-    table-layout: fixed;
+  border-collapse: collapse;
+  table-layout: fixed;
+  text-align: center;
+}
+
+.rotate {
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  width: 1.5em;
+}
+.rotate div {
+     -moz-transform: rotate(-90.0deg);  /* FF3.5+ */
+       -o-transform: rotate(-90.0deg);  /* Opera 10.5 */
+  -webkit-transform: rotate(-90.0deg);  /* Saf3.1+, Chrome */
+             filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
+         -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
+         margin-left: -10em;
+         margin-right: -10em;
 }
 
 h1 {
-    text-align: center;
-    color: green;
+  text-align: center;
+  color: green;
 }
 
 h2 {
-    text-align: center;
-    color: green;
+  text-align: center;
+  color: green;
+}
+
+h3 {
+  text-align: center;
+  color: rgb(67, 122, 85);
 }
 
 audio {
-    width: 70%;
+  width: 70%;
 }
+
+#btnSwitch {
+  background-color: gray;
+  color: blue;
+}
+
+.dropbtn {
+  background-color: #3498DB;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #2980B9;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content button {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown button:hover {background-color: #ddd;}
+
+.show {display: block;}
+
