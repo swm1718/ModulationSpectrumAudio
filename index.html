@@ -1,46 +1,87 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Simple Test Website</title>
-        <link rel="stylesheet" href="src/styles.css">
-<!--         <link rel="manifest" href="manifest.json"> -->
-        <meta name="apple-mobile-web-app-capable" content="yes">
-<!--         <link rel="shortcut icon" type="image/png" href="favicon.ico"> -->
-    </head>
 
-    <body>
-        <h1>Modulation Spectrum Examples</h1>
-        <p>This website sets out a number of examples of how speech files are affected when certain modulation frequencies are removed.</p>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Simple Test Website</title>
+    <link rel="stylesheet" href="src/styles.css">
+    <!--         <link rel="manifest" href="manifest.json"> -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--         <link rel="shortcut icon" type="image/png" href="favicon.ico"> -->
+</head>
 
-        <div class="flex-container">
-            <div style="width:45%; float:left;" class="boxes">
-                <h2>Speech Details</h2>
-                <p>Speaker: FCJF0</p>
-                <p>Utterance: SA1</p>
-                <p>Transcript: She had your dark suit in greasy wash water all year.</p>
-                <div>
-                  <p>Original speech:</p>
-                  <div  align="center">
-                      <audio controls>
-                        <source src="audio/FCJF0/SA1_sigOriginal.wav" type="audio/wav">
-                        Your browser does not support the audio element.
-                      </audio>
-                    </div>
-                </div>
+<body>
+    <h1>Modulation Spectrum Examples</h1>
+    <p>This website sets out a number of examples of how speech files are affected when certain modulation frequencies
+        are removed.</p>
+
+    <!-- <OBJECT data="file_to_include.html" style="width: 100%; border: 1px dashed red; margin:0; padding:0;">
+        Warning: file_to_include.html could not be included.
+    </OBJECT> -->
+
+    <div class="flex-container">
+        <div style="width:45%; float:left; padding:auto 0;" class="boxes">
+            <h2>Speech Details</h2>
+            <table>
+                <tr>
+                    <td>Speaker:</td>
+                    <td>
+                        <div class="dropdown">
+                            <button onclick="myFunction()" class="dropbtn" id="btnDrop">FCJF0</button>
+                            <div id="myDropdown" class="dropdown-content">
+                                <button onclick="selectSpkr('FCJF0')">FCJF0</button>
+                                <button onclick="selectSpkr('MDPK0')">MDPK0</button>
+                                <!-- <a href="#">FCJF0</a>
+                                <a href="#">MDPK0</a> -->
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Utterance:</td>
+                    <td>SA1</td>
+                </tr>
+                <tr>
+                    <td>Sample rate:</td>
+                    <td>16 kHz</td>
+                </tr>
+                <tr>
+                    <td>Transcript:</td>
+                    <td>She had your dark suit in greasy wash water all year.</td>
+                </tr>
+                <tr>
+                    <td>Original speech:</td>
+                    <td>
+                        <div text-align="center">
+                            <audio controls id="origAudio">
+                                <source src="audio/FCJF0/SA1conv.wav" type="audio/wav" id="origSource">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="width:45%; float:left; padding:auto 0;" class="boxes">
+            <h2>Modulation Spectrum Details</h2>
+
+            <div style="width:100%; text-align: center;" onclick="funcSwitch()">
+                <button id="btnSwitch" style="margin: 0;">Switch to narrowband</button>
             </div>
 
-            <div style="width:45%; float:left;" class="boxes">
-                <h2>Modulation Spectrum Details</h2>
+            <div id="divWideband">
+                <h3>Wideband Spectrogram</h3>
                 <table>
                     <tr>
-                        <td>Domain</td>
-                        <td>Window Type</td>
-                        <td>Frame Size</td>
-                        <td>Window Size</td>
+                        <th>Domain</th>
+                        <th>Window Type</th>
+                        <th>Frame Size</th>
+                        <th>Window Size</th>
                     </tr>
                     <tr>
                         <td>Acoustic</td>
@@ -54,93 +95,1528 @@
                         <td>0.1 s</td>
                         <td>1 s</td>
                     </tr>
-                </table> 
+                </table>
+                <div style="margin: 0 0 0 8%; width: 90%; text-align: left;">
+                    <p style="line-height: 0.5">Each modulation frame data shape after Nyquist cut-off: 25 x 501</p>
+                    <p style="line-height: 0.5">Each acoustic frame covers 333.33 Hz</p>
+                    <p style="line-height: 0.5">Each modulation frame covers 1 Hz</p>
+                </div>
             </div>
-      
-            <br clear="all" />
+            <div id="divNarrowband" style="display: none;">
+                <h3>Narrowband Spectrogram</h3>
+                <table>
+                    <tr>
+                        <th>Domain</th>
+                        <th>Window Type</th>
+                        <th>Frame Size</th>
+                        <th>Window Size</th>
+                    </tr>
+                    <tr>
+                        <td>Acoustic</td>
+                        <td>Hamming (not symmetric)</td>
+                        <td>10 ms</td>
+                        <td>30 ms</td>
+                    </tr>
+                    <tr>
+                        <td>Modulation</td>
+                        <td>Hamming (not symmetric)</td>
+                        <td>0.1 s</td>
+                        <td>1 s</td>
+                    </tr>
+                </table>
+                <div style="margin: 0 0 0 8%; width: 90%; text-align: left;">
+                    <p style="line-height: 0.5">Each modulation frame data shape after Nyquist cut-off: 241 x 51</p>
+                    <p style="line-height: 0.5">Each acoustic frame covers 33.33 Hz</p>
+                    <p style="line-height: 0.5">Each modulation frame covers 1 Hz</p>
+                </div>
+            </div>
         </div>
-        
-        <div style="border:1px solid black; margin-top: 50px; padding: 20px%;">
-            <h2>Reconstructed Speech Signals</h2>
-            <table style="width:100%;">
-              <col style="width:5%">
-              <colgroup span="5" style="width:19%"></colgroup>
-              <thead>
-                  <tr>
-                      <th></th>
-                      <th colspan=5>Modulation Frequencies</th>
-                  </tr>
-              </thead>
-              <tbody>  
-                  <tr>
-                    <th rowspan="4" style="transform: rotate(270deg); white-space: nowrap; text-align:left;">Acoustic Frequencies</th>
+
+        <br clear="all" />
+    </div>
+
+
+    <div style="border:1px solid black; margin-top: 50px; padding: 20px;" id="divReconstSpeech">
+
+
+        <!-- First reconstructed speech signals table - for single sided -->
+        <h2>Reconstructed Speech Signals - Single Sided</h2>
+        <table style="width:100%;">
+            <col style="width:2%">
+            <colgroup span="20" style="width:4.9%"></colgroup>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th colspan=20>Modulation Frequencies</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th rowspan="5" class="rotate"><div>Acoustic Frequency Bands</div></th>
                     <th></th>
                     <th>All</th>
                     <th>[1, 20] Hz</th>
                     <th>[1, 16] Hz</th>
                     <th>[4, 16] Hz</th>
-                  </tr>
-                  <tr>
+                    <th>[4, 8]</th>
+                    <th>[3, 5] Hz</th>
+                    <th>[1, 5] Hz</th>
+                    <th>[0] Hz</th>
+                    <th>[1]</th>
+                    <th>[2] Hz</th>
+                    <th>[3] Hz</th>
+                    <th>[4] Hz</th>
+                    <th>[5]</th>
+                    <th>[6] Hz</th>
+                    <th>[7] Hz</th>
+                    <th>[95, 105]</th>
+                    <th>[100, 150] Hz</th>
+                    <th>[150, 200] Hz</th>
+                    <th>[150, 250] Hz</th>
+                </tr>
+                <tr>
                     <th>All</th>
                     <td>
-                      <div  align="center">
-                          <audio controls>
-                            <source src="audio/FCJF0/SA1_SigHat_all_all_1_3_100_1000.wav" type="audio/wav">
+                        <audio id="myAudio_0_0">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_all_1_3_100_1000.wav" type="audio/wav">
                             Your browser does not support the audio element.
-                          </audio>
-                      </div>
+                        </audio>
+                        <button onclick="playAudio(0, 0)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
                     </td>
                     <td>
-                      <div  align="center">
-                          <audio controls>
-                            <source src="audio/FCJF0/SA1_SigHat_all_1to20_1_3_100_1000.wav" type="audio/wav">
+                        <audio id="myAudio_0_1">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_1to20_1_3_100_1000.wav" type="audio/wav">
                             Your browser does not support the audio element.
-                          </audio>
-                      </div>
+                        </audio>
+                        <button onclick="playAudio(0, 1)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
                     </td>
                     <td>
-                        <div  align="center">
-                          <audio controls>
-                            <source src="audio/FCJF0/SA1_SigHat_all_1to16_1_3_100_1000.wav" type="audio/wav">
+                        <audio id="myAudio_0_2">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_1to16_1_3_100_1000.wav" type="audio/wav">
                             Your browser does not support the audio element.
-                          </audio>
-                        </div>
+                        </audio>
+                        <button onclick="playAudio(0, 2)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
                     </td>
                     <td>
-                        <div  align="center">
-                          <audio controls>
-                            <source src="audio/FCJF0/SA1_SigHat_all_4to16_1_3_100_1000.wav" type="audio/wav">
+                        <audio id="myAudio_0_3">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_4to16_1_3_100_1000.wav" type="audio/wav">
                             Your browser does not support the audio element.
-                          </audio>
-                        </div>
+                        </audio>
+                        <button onclick="playAudio(0, 3)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
                     </td>
-                  </tr>
-                  <tr>
-                    <th>166-4,000 Hz</th>
                     <td>
-                        <div  align="center">
-                          
-                        </div>
+                        <audio id="myAudio_0_4">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_4to8_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(0, 4)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <th>166-1,000 Hz</th>
                     <td>
-                        <div  align="center">
-                          
-                        </div>
+                        <audio id="myAudio_0_5">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_3to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(0, 5)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-            </table>
-        </div>
+                    <td>
+                        <audio id="myAudio_0_6">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_1to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(0, 6)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_0_7">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_0to0_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(0, 7)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_0_8">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_1to1_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(0, 8)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_0_9">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_2to2_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(0, 9)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_0_10">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_3to3_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(0, 10)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_0_11">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_4to4_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(0, 11)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_0_12">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_5to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(0, 12)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_0_13">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_6to6_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(0, 13)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_0_14">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_7to7_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(0, 14)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_0_15">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_95to105_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(0, 15)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_0_16">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_100to150_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(0, 16)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_0_17">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_150to200_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(0, 17)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_0_18">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_150to250_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(0, 18)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>[1, 13]: 166 Hz to 4 kHz</th>
+                    <td>
+                        <audio id="myAudio_1_0">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_all_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 0)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_1_1">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_1to20_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 1)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_1_2">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_1to16_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 2)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_1_3">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_4to16_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 3)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_1_4">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_4to8_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 4)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_1_5">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_3to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 5)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_1_6">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_1to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 6)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_1_7">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_0to0_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 7)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_1_8">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_1to1_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 8)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_1_9">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_2to2_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 9)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_1_10">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_3to3_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 10)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_1_11">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_4to4_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 11)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_1_12">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_5to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 12)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_1_13">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_6to6_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 13)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_1_14">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_7to7_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 14)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_1_15">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_95to105_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 15)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_1_16">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_100to150_1_3_100_1000.wav"
+                                type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 16)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_1_17">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_150to200_1_3_100_1000.wav"
+                                type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 17)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_1_18">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to13_150to250_1_3_100_1000.wav"
+                                type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(1, 18)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>[1, 3]: 166 Hz to 1,166 Hz</th>
+                    <td>
+                        <audio id="myAudio_2_0">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to3_all_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 0)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_2_1">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to3_1to20_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 1)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_2_2">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to3_1to16_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 2)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_2_3">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to3_4to16_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 3)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_2_4">
+                            <source src="audio/FCJF0/SA1_SigHat_single_all_1to3_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 4)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_2_5">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to3_3to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 5)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_2_6">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to3_1to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 6)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_2_7">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to3_0to0_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 7)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_2_8">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to3_1to1_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 8)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_2_9">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to3_2to2_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 9)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_2_10">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to3_3to3_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 10)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_2_11">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to3_4to4_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 11)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_2_12">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to3_5to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 12)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_2_13">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to3_6to6_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 13)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_2_14">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to3_7to7_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 14)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_2_15">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to3_95to105_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 15)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_2_16">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to3_100to150_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 16)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_2_17">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to3_150to200_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 17)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_2_18">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to3_150to250_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(2, 18)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>[1]: 166 Hz to 500 Hz</th>
+                    <td>
+                        <audio id="myAudio_3_0">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_all_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 0)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_3_1">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_1to20_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 1)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_3_2">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_1to16_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 2)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_3_3">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_4to16_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 3)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_3_4">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_4to8_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 4)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_3_5">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_3to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 5)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_3_6">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_1to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 6)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_3_7">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_0to0_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 7)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_3_8">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_1to1_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 8)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_3_9">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_2to2_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 9)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_3_10">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_3to3_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 10)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_3_11">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_4to4_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 11)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_3_12">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_5to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 12)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_3_13">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_6to6_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 13)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_3_14">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_7to7_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 14)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_3_15">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_95to105_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 15)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_3_16">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_100to150_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 16)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_3_17">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_150to200_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 17)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_3_18">
+                            <source src="audio/FCJF0/SA1_SigHat_single_1to1_150to250_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(3, 18)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-<!--         <script src="src/scripts.js"></script> -->
-    </body>
+
+        <!-- Second reconstructed speech signals table - for double sided -->
+        <h2>Reconstructed Speech Signals - Double Sided</h2>
+        <table style="width:100%;">
+            <col style="width:2%">
+            <colgroup span="20" style="width:4.9%"></colgroup>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th colspan=20>Modulation Frequencies</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th rowspan="5" class="rotate"><div>Acoustic Frequency Bands</div></th>
+                    <th></th>
+                    <th>All</th>
+                    <th>[1, 20] Hz</th>
+                    <th>[1, 16] Hz</th>
+                    <th>[4, 16] Hz</th>
+                    <th>[4, 8]</th>
+                    <th>[3, 5] Hz</th>
+                    <th>[1, 5] Hz</th>
+                    <th>[0] Hz</th>
+                    <th>[1]</th>
+                    <th>[2] Hz</th>
+                    <th>[3] Hz</th>
+                    <th>[4] Hz</th>
+                    <th>[5]</th>
+                    <th>[6] Hz</th>
+                    <th>[7] Hz</th>
+                    <th>[95, 105]</th>
+                    <th>[100, 150] Hz</th>
+                    <th>[150, 200] Hz</th>
+                    <th>[150, 250] Hz</th>
+                </tr>
+                <tr>
+                    <th>All</th>
+                    <td>
+                        <audio id="myAudio_10_0">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_all_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 0)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_10_1">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_1to20_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 1)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_10_2">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_1to16_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 2)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_10_3">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_4to16_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 3)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_10_4">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_4to8_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 4)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_10_5">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_3to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 5)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_10_6">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_1to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 6)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_10_7">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_0to0_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 7)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_10_8">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_1to1_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 8)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_10_9">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_2to2_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 9)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_10_10">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_3to3_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 10)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_10_11">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_4to4_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 11)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_10_12">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_5to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 12)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_10_13">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_6to6_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 13)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_10_14">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_7to7_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 14)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_10_15">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_95to105_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 15)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_10_16">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_100to150_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 16)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_10_17">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_150to200_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 17)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_10_18">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_150to250_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(10, 18)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>[1, 13]: 166 Hz to 4 kHz</th>
+                    <td>
+                        <audio id="myAudio_11_0">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_all_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 0)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_11_1">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_1to20_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 1)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_11_2">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_1to16_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 2)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_11_3">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_4to16_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 3)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_11_4">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_4to8_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 4)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_11_5">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_3to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 5)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_11_6">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_1to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 6)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_11_7">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_0to0_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 7)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_11_8">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_1to1_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 8)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_11_9">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_2to2_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 9)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_11_10">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_3to3_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 10)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_11_11">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_4to4_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 11)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_11_12">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_5to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 12)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_11_13">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_6to6_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 13)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_11_14">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_7to7_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 14)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_11_15">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_95to105_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 15)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_11_16">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_100to150_1_3_100_1000.wav"
+                                type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 16)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_11_17">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_150to200_1_3_100_1000.wav"
+                                type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 17)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_11_18">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to13_150to250_1_3_100_1000.wav"
+                                type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(11, 18)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>[1, 3]: 166 Hz to 1,166 Hz</th>
+                    <td>
+                        <audio id="myAudio_12_0">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to3_all_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 0)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_12_1">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to3_1to20_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 1)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_12_2">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to3_1to16_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 2)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_12_3">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to3_4to16_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 3)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_12_4">
+                            <source src="audio/FCJF0/SA1_SigHat_double_all_1to3_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 4)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_12_5">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to3_3to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 5)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_12_6">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to3_1to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 6)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_12_7">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to3_0to0_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 7)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_12_8">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to3_1to1_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 8)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_12_9">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to3_2to2_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 9)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_12_10">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to3_3to3_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 10)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_12_11">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to3_4to4_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 11)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_12_12">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to3_5to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 12)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_12_13">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to3_6to6_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 13)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_12_14">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to3_7to7_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 14)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_12_15">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to3_95to105_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 15)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_12_16">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to3_100to150_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 16)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_12_17">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to3_150to200_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 17)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_12_18">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to3_150to250_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(12, 18)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>[1]: 166 Hz to 500 Hz</th>
+                    <td>
+                        <audio id="myAudio_13_0">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_all_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 0)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_13_1">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_1to20_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 1)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_13_2">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_1to16_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 2)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_13_3">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_4to16_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 3)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_13_4">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_4to8_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 4)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_13_5">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_3to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 5)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_13_6">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_1to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 6)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_13_7">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_0to0_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 7)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_13_8">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_1to1_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 8)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_13_9">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_2to2_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 9)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_13_10">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_3to3_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 10)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_13_11">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_4to4_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 11)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_13_12">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_5to5_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 12)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_13_13">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_6to6_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 13)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_13_14">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_7to7_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 14)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_13_15">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_95to105_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 15)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_13_16">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_100to150_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 16)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_13_17">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_150to200_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 17)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                    <td>
+                        <audio id="myAudio_13_18">
+                            <source src="audio/FCJF0/SA1_SigHat_double_1to1_150to250_1_3_100_1000.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <button onclick="playAudio(13, 18)" type="button"
+                            style="background-color: Transparent; outline:none;"><img src="src/play.png"
+                                width=60%></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+    <script src="src/scripts.js"></script>
+</body>
+
 </html>
