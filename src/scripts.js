@@ -1,16 +1,31 @@
 function funcSwitch() {
-    var x = document.getElementById("divWideband");
-    var y = document.getElementById("divNarrowband");
+    // var x = document.getElementById("divWideband");
+    // var y = document.getElementById("divNarrowband");
+    // var z = document.getElementById("btnSwitch");
+    var x = document.getElementsByClassName("divWideband");
+    var y = document.getElementsByClassName("divNarrowband");
     var z = document.getElementById("btnSwitch");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-        y.style.display = "none";
-        z.innerHTML = "Switch to narrowband";
-    } else {
-        x.style.display = "none";
-        y.style.display = "block";
-        z.innerHTML = "Switch to wideband";
+    // This assumes x and y are the same length
+    for (i = 0; i < x.length; i++) {
+        if (x[i].style.display === "none") {
+            x[i].style.display = "block";
+            y[i].style.display = "none";
+            z.innerHTML = "Switch to narrowband"; // Should tidy up so not done every time
+        } else {
+            x[i].style.display = "none";
+            y[i].style.display = "block";
+            z.innerHTML = "Switch to wideband"; // Should tidy up so not done every time
+        }
     }
+    // if (x.style.display === "none") {
+    //     x.style.display = "block";
+    //     y.style.display = "none";
+    //     z.innerHTML = "Switch to narrowband";
+    // } else {
+    //     x.style.display = "none";
+    //     y.style.display = "block";
+    //     z.innerHTML = "Switch to wideband";
+    // }
 }
 
 
